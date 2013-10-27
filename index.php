@@ -1,6 +1,7 @@
 <?php
-  //phpinfo();
-  echo "点击下面链接，进入管理子系统模块页面";
+    //phpinfo();
+	header("Content-Type: text/html; charset=utf-8");
+    echo "点击下面链接，进入管理子系统模块页面";
 ?>
 
 <html>
