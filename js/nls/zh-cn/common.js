@@ -1,4 +1,5 @@
 define({
+		
 		btn_cancel:"取消",
         btn_ok:"确认",
         btn_reset:"重置",
@@ -14,7 +15,18 @@ define({
         login_username:"用户名",
         login_pwd:"密码",
         login_err:"您输入的用户名或者密码不正确",
-        internal_server_error:"服务器内部错误，需要了解情况，请进一步联系您的管理员"
+        internal_server_error:"服务器内部错误，需要了解情况，请进一步联系您的管理员",
+        pw_forgot:"忘记密码?",
+        pw_forgot_tips:"您首先需要在Mepla中拥有有效的电子邮件地址， 以便新的密码能够成功的被接受到。 <br>  请输入您的用户名和已登记的有效的电子邮件地址。",
+        email_invalid:"你输入的电子邮件地址无效",
+        username_email_invalid:"你输入的用户名或者电子邮件地址无效",
+        chg_pw:"变更用户密码",
+        chg_pw_tips:"请您输入当前密码和新的密码。",
+        new_pw:"新密码",
+        old_pw:"当前密码",
+        new_pw_no_match:"您输入的新密码前后不匹配，请您再输入一次。",
+        pw_send:"您的密码已经被重置，新的密码将由系统自动发至到您的邮箱内，如果您在5分钟内还没有收到邮件，请您重试或者联系您的系统管理员。",
+        pw_changed:"密码已经成功的被更改。",
 	
 	
 });

@@ -1,7 +1,7 @@
 <?php
     //phpinfo();
 	header("Content-Type: text/html; charset=utf-8");
-	echo "cssa mgt page";
+// 	echo "cssa mgt page";
   
 ?>
 
@@ -73,8 +73,11 @@
 <!-- <script type="text/javascript" src="../js/dojoBase/dojo/dojo.js.uncompressed.js?version=0.1"></script> -->
 <script type="text/javascript" src="../js/dojoBase/dojo/dojo.js?version=0.1"></script>
 <script type="text/javascript" src="../js/util/global_vars.js?version=0.1"></script>
+<script type="text/javascript" src="../js/gui/ys_label_and_title.js?version=0.1"></script>
 
 <script type="text/javascript" src="../js/gui/ys_loadingOverlay.js?version=0.1"></script>
+<script type="text/javascript" src="../js/gui/ys_mgt_login.js?version=0.1"></script>
+
 
 <script>
     require([
@@ -111,9 +114,9 @@
             // This function won't run until the DOM has loaded and other modules that register
             YS_PHPSESSID  = cookie("PHPSESSID");
             console.log("PHPSESSID  = ", YS_PHPSESSID);
-            //ys_setGuiLabelAndTitle();
+            ys_setGuiLabelAndTitle();
             
-            //ys_showLoginDlg();
+            ys_showLoginDlg();
         });
     });
 
@@ -125,5 +128,19 @@
 <body class="claro" id="mgt_page_body">
 <div id="loadingOverlay" class="pageOverlay"></div>
 
+<?php include 'mgt_login.php'; ?>
+
+
 </body>
+
+<noscript>
+    <style>
+            /* ensure no-javascript browsers aren't obstructed */
+        #loadingOverlay {
+            display: none !important;
+        }
+    </style>
+</noscript>
+
+</html>
 
