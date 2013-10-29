@@ -77,6 +77,7 @@
 
 <script type="text/javascript" src="../js/gui/ys_loadingOverlay.js?version=0.1"></script>
 <script type="text/javascript" src="../js/gui/ys_mgt_login.js?version=0.1"></script>
+<script type="text/javascript" src="../js/gui/ys_mgt_registration.js?version=0.1"></script>
 <script type="text/javascript" src="../js/gui/ys_layout.js?version=0.1"></script>
 <script type="text/javascript" src="../js/gui/ys_calendar.js?version=0.1"></script>
 
@@ -93,6 +94,8 @@
         "dijit/form/ComboBox",
         "dijit/form/CheckBox",
         "dijit/Menu",
+        "dojox/form/PasswordValidator",
+        "dijit/Toolbar",
         "dijit/Fieldset",
         "dijit/PopupMenuItem",
         "dijit/MenuItem",
@@ -131,6 +134,7 @@
 
 <?php include 'mgt_login.php'; ?>
 <?php include 'mgt_pw_forget.php'; ?>
+<?php include 'mgt_registration.php'; ?>
 <?php include 'mgt_main_layout.php'; ?>
 
 </body>

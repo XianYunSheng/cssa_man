@@ -3,6 +3,12 @@ User
 +	GET    /user/	               获得所有user的一个json array.  并且实现filtering和sorting    
 +	GET    /user/$userId	获得id为userid的user
 +	PUT    /user/                     新建一个user
+
+// 新建user也就是注册,  传递一个json obj 如下 {id:"", username:string, email:string, passwd:string} , 其后三个属性为必填项，not null。 其他的属性可以随便添加，简便起见，没有写。 可根据数据库扩充
+// 新建user, put请求后。 并创建操作后， 返回一个 json obj 如下 {success: true, error:""} 或者 {success: false, error:""} 或者 {success: false, error:"user_exists"} , 后一种说明该用户名存在，无法创建。
+
+
+
 +	PUT    /user/$userId        更新id为userid的user
 +	DELETE /user/$userId	删除id为userid的user
 

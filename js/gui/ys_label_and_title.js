@@ -22,6 +22,7 @@ function ys_setGuiLabelAndTitle(){
 	        dom.byId("mgt_login_pwd_lb").innerHTML = common.login_pwd;
 	        dom.byId("mgt_login_error_lb").innerHTML = common.login_err;
 	        dom.byId("mgt_password_forgot_lb").innerHTML = common.pw_forgot;  
+	        dom.byId("mgt_registration_lb").innerHTML = common.registration;
 	        dom.byId("mgt_password_forgot_text_lb").innerHTML = common.pw_forgot_tips; 
             dom.byId("mgt_password_usr_lb").innerHTML = common.login_username;  
             dom.byId("mgt_password_email_lb").innerHTML = common.email;

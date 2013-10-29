@@ -22,7 +22,10 @@
         </tr>
         <tr><td colspan="2" height="10px"> </td></tr>
         <tr><td colspan="2" height="20px"> </td></tr>
-        <tr><td colspan="2" height="10px" align="center"><a id="mgt_password_forgot_lb" style="font-size: 12px;" href="javascript:;" onclick="doPasswdRecall();" ></a> </td></tr>
+        <tr>
+        	<td height="10px" align="center"><a id="mgt_password_forgot_lb" style="font-size: 12px;" href="javascript:;" onclick="doPasswdRecall();" ></a> </td>
+        	<td height="10px" align="center"><a id="mgt_registration_lb" style="font-size: 12px;" href="javascript:;" onclick="doRegistration();" ></a> </td>
+        </tr>
         <tr><td colspan="2" height="30px"> </td></tr>
         <tr>
             <td align="center" colspan="2">
