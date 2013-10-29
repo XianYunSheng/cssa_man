@@ -1,5 +1,6 @@
 function showArtMgt(){
 	ys_showMainPageForManagementBtnClick("article_mgt_borderContainer");
+	
 }
 
 function showCalMgt(){
@@ -13,6 +14,7 @@ function doChgUserPasswd(){
 function ys_showMainPageForManagementBtnClick(show_id){
 	
 	console.log("ys_showMainPageForManagementBtnClick show id = " , show_id);
+	
 	require(["dojo/dom","dojo/dom-style","dijit/registry"], 
 			function(dom,domStyle,reg){
 
@@ -29,8 +31,8 @@ function ys_showMainPageForManagementBtnClick(show_id){
 
 
             var main_menu_bc = [{"id":"article_mgt_borderContainer"},{"id":"calendar_mgt_borderContainer"}];
-        
-        
+         
+        	
             for(var idx in main_menu_bc){
                 var item = main_menu_bc[idx];
                 var id = item.id;
@@ -49,10 +51,12 @@ function ys_showMainPageForManagementBtnClick(show_id){
 
                 }
             }
-      
+             
 
-
-        var page_content = reg.byId("page_content_container");
-        page_content.resize();
+            if("article_mgt_borderContainer" == show_id){
+            	ys_start_article_grid();
+            }
+        //var page_content = reg.byId("page_content_container");
+        //page_content.resize();
     });
 }

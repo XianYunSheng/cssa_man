@@ -68,16 +68,29 @@ phpsessid:string
 +	PUT    / article /$articleid            更新id为articleid            的article
 +	DELETE / article /$articleid	删除id为articleid            的article
 json obj:
+
 {
-id: long,  // article的id
-parentid:long, //上级article的id, 用于回复？
-title:string,
-content:string,
-creuser: long, //创建者userid
-credate:long, //创建时间戳 unix毫秒   
-moduser:long,//修改者 userid
-moddate:long ,//修改时间戳
-refer:[{userid:string, dispname:string, username:string},{userid:string, dispname:string, username:string },...],  // 涉及人或者参与者等，json array
-state:string, //状态，例如审核状态等
+id: 1,  // article的id
+		answer: [{id:3, title:"回复第一篇", creuser:2}],
+		title:"第一篇",
+		content:"This is the first aticle",
+		creuser: "dashen", //创建者username
+		credate:123123123, //创建时间戳 unix毫秒   
+		moduser:"",//修改者 userid
+		moddate:"" ,//修改时间戳
+		refer:[{userid:2, dispname:"晓友", username:"xiaoyou"},{userid:3, dispname:"吉晨", username:"jack" }],  // 涉及人或者参与者等，json array
+		state:"A", //状态，例如审核状态等
 }
+
+
+
+
+4. article中间编辑富文本和插入图片, 如果有这个需求， 可能需要jack 读一下这个http://dojotoolkit.org/reference-guide/1.8/dojox/editor/plugins/LocalImage.html#dojox-editor-plugins-localimage
+
+
+
+
+
+
+
 

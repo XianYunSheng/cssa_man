@@ -19,9 +19,12 @@
 <link rel="stylesheet" href="../js/dojoBase/dojox/calendar/themes/claro/Calendar.css?version=0.1" media="screen">
 <link rel="stylesheet" href="../js/dojoBase/dojox/calendar/themes/claro/MonthColumnView.css?version=0.1" media="screen">
 
+<link rel="stylesheet" href="../js/dojoBase/dojox/form/resources/FileUploader.css?version=0.1" media="screen">
+<link rel="stylesheet" href="../js/dojoBase/dojox/editor/plugins/resources/css/LocalImage.css?version=0.1" media="screen">
+
 <link rel="stylesheet" href="../assets/css/gridx.css?version=0.1" media="screen">
 <link rel="stylesheet" href="../assets/css/calendar.css?version=0.1" media="screen">
-
+ 
 <link rel="stylesheet" href="../assets/css/gui.css?version=0.1" media="screen">
 
 <script>
@@ -80,6 +83,7 @@
 <script type="text/javascript" src="../js/gui/ys_mgt_registration.js?version=0.1"></script>
 <script type="text/javascript" src="../js/gui/ys_layout.js?version=0.1"></script>
 <script type="text/javascript" src="../js/gui/ys_calendar.js?version=0.1"></script>
+<script type="text/javascript" src="../js/gui/ys_article.js?version=0.1"></script>
 
 <script>
     require([
@@ -96,6 +100,10 @@
         "dijit/Menu",
         "dojox/form/PasswordValidator",
         "dijit/Toolbar",
+        "dijit/Editor",
+        "dijit/_editor/plugins/FontChoice", // 'fontName','fontSize','formatBlock'
+        "dijit/_editor/plugins/TextColor",
+        "dojox/editor/plugins/LocalImage",
         "dijit/Fieldset",
         "dijit/PopupMenuItem",
         "dijit/MenuItem",
