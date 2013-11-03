@@ -84,7 +84,7 @@ function ys_doLogin() {
 
 												"success" : true,
 												"uid" : "",
-												"loginname" : "",
+												"username" : "",
 												"dispname" : "",
 												"lastname" : "",
 												"firstname" : "",
@@ -112,7 +112,7 @@ function ys_doLogin() {
 																if (info_data) {
 
 																	user_def.uid = info_data.uid;
-																	user_def.loginname = info_data.loginname;
+																	user_def.username = info_data.username;
 																	user_def.dispname = info_data.dispname;
 																	user_def.lastname = info_data.lastname;
 																	user_def.firstname = info_data.firstname;
