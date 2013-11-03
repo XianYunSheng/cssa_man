@@ -39,6 +39,12 @@
 				intermediateChanges="false" label="删除"
 				iconClass="dijitEditorIcon dijitEditorIconDelete">
 			</input>
+			<input
+				type="button" data-dojo-type="dijit/form/Button"
+				id="article_mgt_gridToolbar_refresh_btn" tabIndex="-1"
+				intermediateChanges="false" label="刷新"
+				iconClass="dijitEditorIcon dijitEditorIconDelete">
+			</input>
 		</div>
 		标题
 		<textarea id="article_mgt_editor_title" name="article_mgt_editor_title" 

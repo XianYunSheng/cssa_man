@@ -243,7 +243,9 @@ function ys_start_article_grid() {
 								colId : 'credate',
 								descending : true
 							}
-						}, IndirectSelect, Row, RowHeader, Ext_Row, Pagination,
+						}, 
+						//IndirectSelect,
+						Row, RowHeader, Ext_Row, Pagination,
 								PaginationBar, VirtualVScroller, Filter,
 								FilterBar, Bar ]
 					});
@@ -283,17 +285,37 @@ function ys_start_article_grid_toolbar(){
 			var article_grid 	=	reg.byId(grid_id);
 			var article_editor = reg.byId("article_mgt_editor");
 			var article_editor_title = reg.byId("article_mgt_editor_title");
-			 	var clean_btn = registry.byId(grid_id + "Toolbar_create_btn");
-	            var insert_btn = registry.byId(grid_id + "Toolbar_insert_btn");
-	            var change_btn = registry.byId(grid_id + "Toolbar_change_btn");
-	            var delete_btn = registry.byId(grid_id + "Toolbar_delete_btn");
+			
+			var clean_btn  = registry.byId(grid_id + "Toolbar_create_btn");
+	        var insert_btn = registry.byId(grid_id + "Toolbar_insert_btn");
+	        var change_btn = registry.byId(grid_id + "Toolbar_change_btn");
+	        var delete_btn = registry.byId(grid_id + "Toolbar_delete_btn");
+	        var refresh_btn = registry.byId(grid_id + "Toolbar_refresh_btn");
+	        
+	        var article_title 	= article_editor_title.get("value");
+	        var article_content = article_editor.get("value");
+	        
+	        var article_obj = {
+	        		articleId:"",
+	        		answer: [],
+	        		title: article_title,
+	        		content: article_content,
+	        		creuser: "", //创建者username
+	        		credate: "", //创建时间戳 unix毫秒   
+	        		moduser: "",//修改者 userid
+	        		moddate: "" ,//修改时间戳
+	        		refer:[],  // 涉及人或者参与者等，json array
+	        		state:""
+	        		
+	        };    
 			
 	            
 	          //clean
 	            if (clean_btn) {
 	                on(clean_btn, "click", function (e) {
 	                	article_grid.select.row.clear();
-	                	article_editor.set("valie","");
+	                	ys_article_page_clean(article_editor, article_editor_title);
+	                	 
 	                });
 	            }
 	            
@@ -303,26 +325,200 @@ function ys_start_article_grid_toolbar(){
 	                	console.log("article_editor = ", article_editor.get("value"), "  article_editor_title = ", article_editor_title.get("value"));
 	                	 
 	                     
-	                    if (article_editor.get("value")=="") {
-	                        alert("内容不能为空");
-	                    	return false;
-	                    }
-	                    
+	                	if(ys_article_pre_check(article_content, article_title)){
+		                    when(article_grid.store.add(ys_article_grid_insert(article_obj)), function (value) {
+		                        // do something when resolved
+		                        console.log("after add");
+		                        console.log("value ", value);
+		                        if (!value.success) {
+		                            alert(common.operation_error);
+		                        } else {
+		                              var new_id = value.articleId;
+		                    
+		                              article_grid.model.clearCache();
+		                              article_grid.model.query({articleId:new_id}, {
+		                                    start:0,
+		                                    count:1
+		                                });
+		                              article_grid.body.refresh();
+		                              article_grid.select.row.clear();
+		                                
+		                              ys_article_page_clean(article_editor, article_editor_title);
 
-	                    if (article_editor_title.get("value")== "") {
-	                    	alert("标题不能为空");
-	                        return false;
-	                    }
 
-                        
-	                    //todo: insert
+		                        }
+		                    }, function (err) {
+		                        console.log("err ", err);
+		                        alert(common.operation_error);
+		                    }, function (update) {
+		                    });
+	                	}
+ 
 	                     
 	                });
 	            }else{
 
 	                console.log("insert btn could not be found, ", insert_btn);
 	            }//end insert
+	            
+	            
+	            
+	            
+	            
+	            if (change_btn) {
+	                on(change_btn, "click", function (e) {
+	                    console.log("update op");
+	                    var selected = article_grid.select.row.getSelected();
+	                    if (selected.length != 1) {
+	                        alert("请您选择一个条目进行编辑");
+	                        return false;
+	                    } else {
+	                    	if(ys_article_pre_check(article_content, article_title)){
+	                    		
+	                    		 var row = article_grid.row(selected[0]);
+	 	                         when(article_grid.store.put(ys_article_grid_update(row, obj), {articleId:selected[0]}), function (value) {
+
+	 	                            console.log("value ", value);
+	 	                            if (!value.success) {
+	 	                                alert(common.operation_error);
+	 	                            } 
+
+	 	                           article_grid.model.clearCache();
+	 	                           article_grid.body.refresh();
+	 	                        }, function (err) {
+	 	                            // do something when rejected
+	 	                            console.log("err ", err);
+	 	                            alert(common.operation_error);
+	 	                            article_grid.model.clearCache();
+	 	                            article_grid.body.refresh();
+	 	                            article_grid.select.row.clear();
+	 	                        }, function (update) {
+	 	                        });
+	                    		
+	                    	}
+ 
+	                    }
+
+	                });
+	            }//end update
+	            
+	            
+	            if (delete_btn) {
+	                on(delete_btn, "click", function (e) {
+	                    // handle the event
+	                    console.log("delete_btn click");
+ 
+
+	                    var selected = article_grid.select.row.getSelected();
+
+
+
+	                    if (selected.length != 1) {
+	                    	alert("请您选择一个条目进行编辑");
+	                        return false;
+	                    } else {
+	                        when(article_grid.store.remove(selected[0]), function (value) {
+
+	                            console.log("delete_btn click ", value);
+
+	                            if (!value) {
+	                                alert(common.operation_error);
+	                            } else {
+ 
+	                            	ys_article_page_clean(article_editor, article_editor_title);
+	                               
+	                            }
+
+	                            article_grid.model.clearCache();
+	                            article_grid.body.refresh();
+
+	                            article_grid.select.row.clear();
+	                        }, function (err) {
+	                            // do something when rejected
+	                            console.log("err ", err);
+	                            alert(common.operation_error);
+	                            article_grid.model.clearCache();
+	                            article_grid.body.refresh();
+	                        }, function (update) {
+	                        });
+	                    }
+
+	                });
+	            }//end delete
+	            
+	            
+	            
+	            
+	            
+	            //refresh
+	            if (refresh_btn) {
+	                on(refresh_btn, "click", function (e) {
+
+	                    console.log("refresh_btn click");
+	                    article_grid.model.clearCache();
+	                     
+	                    article_grid.body.refresh();
+	                    article_grid.select.row.clear();
+	                    console.log("refresh finish");
+	                });
+	            }
+	            
 			
 	});
 	
+}
+
+function ys_article_grid_insert(obj){
+	
+	obj.articleId = "";
+	obj.answer = "";
+	creuser = YS_MGT_CURRENT_USER.username; //创建者username
+	credate = new Date().getTime(); //创建时间戳 unix毫秒   
+	moduser = ""; //修改者 userid
+	moddate = "" ;//修改时间戳
+	refer = [];   // 涉及人或者参与者等，json array
+	state = "";
+	
+	return obj;
+	
+}
+
+
+function ys_article_grid_update(row, obj){
+	
+	 
+		obj.articleId = row.articleId;
+		obj.answer = "";
+ 
+		moduser = YS_MGT_CURRENT_USER.username; //修改者 userid
+		moddate = new Date().getTime() ;//修改时间戳
+		refer = [];   // 涉及人或者参与者等，json array
+		state = "";
+		
+		return obj;	
+	 
+}
+
+function ys_article_page_clean(content, title){
+	
+	content.set("value","");
+	title.set("value","");
+	
+}
+
+function ys_article_pre_check(article_content, article_title){
+	
+    if (article_content =="") {
+        alert("内容不能为空");
+    	return false;
+    }
+    
+
+    if (article_title == "") {
+    	alert("标题不能为空");
+        return false;
+    }
+    
+    return true;
+    
 }

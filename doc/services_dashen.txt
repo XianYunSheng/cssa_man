@@ -69,7 +69,7 @@ phpsessid:string
 json obj:
 
 {
-id: 1,  // article的id
+articleId: 1,  // article的id
 		answer: [{id:3, title:"回复第一篇", creuser:2}],
 		title:"第一篇",
 		content:"This is the first aticle",
