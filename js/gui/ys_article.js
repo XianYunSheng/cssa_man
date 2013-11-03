@@ -27,12 +27,7 @@ function ys_start_article_grid() {
 		var id = "article_mgt_grid";
 		var grid_div = reg.byId(id);
 		
-		
-		var uri = "";
-		
-		
-
-		
+	 
 
 		var demo_data = [ {
 			articleId : 1, // article的id
@@ -102,7 +97,7 @@ function ys_start_article_grid() {
 		
 		
 		if(YS_TEST){
-			store = new Memory({data:demo_data});
+			store = new Memory({idProperty : "articleId", data:demo_data});
 		}else{
 			master_store = new Observable(JsonRest({
 				target : "http://cssa.yunsoft.co.uk/taskman/article/",
@@ -233,20 +228,28 @@ function ys_start_article_grid() {
 						structure : structure,
 						selectRowMultiple : false,
 						pageSize : 15,
-						paginationBarSizes : [ 15, 30, 50, 100, 0 ],
+						paginationBarSizes : [ 10, 20, 50, 100, 0 ],
 						// barTop:[
 						// { plugin:toolbar_id}
 						// ],
-						modules : [ CellWidget, ColumnResizer, TouchScroll, {
+						modules : [ 
+						    CellWidget, 
+						    ColumnResizer, 
+						    TouchScroll, 
+						    {
 							moduleClass : SingleSort,
 							initialOrder : {
 								colId : 'credate',
 								descending : true
 							}
 						}, 
-						//IndirectSelect,
-						Row, RowHeader, Ext_Row, Pagination,
-								PaginationBar, VirtualVScroller, Filter,
+						IndirectSelect,
+						Row, 
+						RowHeader, 
+						Pagination,
+						PaginationBar,
+						VirtualVScroller,
+						Filter,
 								FilterBar, Bar ]
 					});
 
@@ -272,25 +275,26 @@ function ys_start_article_grid() {
 		}
 		
 		ys_start_article_grid_toolbar();
+		
 
 	});
 
 }
 function ys_start_article_grid_toolbar(){
 	
-	require([ "dojo/i18n!../js/nls/common.js", "dojo/dom-style", "dijit/registry", "dojo/request/xhr","dojo/store/Memory", "dojo/on", "dojo/when"],
-			function(common, domStyle, reg, xhr, Memory, on, when){
+	require([ "dojo/i18n!../js/nls/common.js", "dojo/dom-style", "dijit/registry", "dojo/request/xhr","dojo/store/Memory", "dojo/on", "dojo/when", "dojo/dom-construct", "dojo/_base/window"],
+			function(common, domStyle, reg, xhr, Memory, on, when, domConstruct, win){
 			var grid_id = "article_mgt_grid";
 			var article_toolbar = 	reg.byId(grid_id+ "Toolbar");
 			var article_grid 	=	reg.byId(grid_id);
 			var article_editor = reg.byId("article_mgt_editor");
 			var article_editor_title = reg.byId("article_mgt_editor_title");
 			
-			var clean_btn  = registry.byId(grid_id + "Toolbar_create_btn");
-	        var insert_btn = registry.byId(grid_id + "Toolbar_insert_btn");
-	        var change_btn = registry.byId(grid_id + "Toolbar_change_btn");
-	        var delete_btn = registry.byId(grid_id + "Toolbar_delete_btn");
-	        var refresh_btn = registry.byId(grid_id + "Toolbar_refresh_btn");
+			var clean_btn  = reg.byId(grid_id + "Toolbar_create_btn");
+	        var insert_btn = reg.byId(grid_id + "Toolbar_insert_btn");
+	        var change_btn = reg.byId(grid_id + "Toolbar_change_btn");
+	        var delete_btn = reg.byId(grid_id + "Toolbar_delete_btn");
+	        var refresh_btn = reg.byId(grid_id + "Toolbar_refresh_btn");
 	        
 	        var article_title 	= article_editor_title.get("value");
 	        var article_content = article_editor.get("value");
@@ -326,7 +330,7 @@ function ys_start_article_grid_toolbar(){
 	                	 
 	                     
 	                	if(ys_article_pre_check(article_content, article_title)){
-		                    when(article_grid.store.add(ys_article_grid_insert(article_obj)), function (value) {
+		                    when(article_grid.store.add(ys_article_grid_insert(article_obj, reg)), function (value) {
 		                        // do something when resolved
 		                        console.log("after add");
 		                        console.log("value ", value);
@@ -376,7 +380,7 @@ function ys_start_article_grid_toolbar(){
 	                    	if(ys_article_pre_check(article_content, article_title)){
 	                    		
 	                    		 var row = article_grid.row(selected[0]);
-	 	                         when(article_grid.store.put(ys_article_grid_update(row, obj), {articleId:selected[0]}), function (value) {
+	 	                         when(article_grid.store.put(ys_article_grid_update(row, obj, reg), {articleId:selected[0]}), function (value) {
 
 	 	                            console.log("value ", value);
 	 	                            if (!value.success) {
@@ -463,12 +467,12 @@ function ys_start_article_grid_toolbar(){
 	                });
 	            }
 	            
-			
+	            ys_set_user_list_in_article_refer(reg, xhr, common, Memory, domConstruct, win);
 	});
 	
 }
 
-function ys_article_grid_insert(obj){
+function ys_article_grid_insert(obj, reg){
 	
 	obj.articleId = "";
 	obj.answer = "";
@@ -476,7 +480,7 @@ function ys_article_grid_insert(obj){
 	credate = new Date().getTime(); //创建时间戳 unix毫秒   
 	moduser = ""; //修改者 userid
 	moddate = "" ;//修改时间戳
-	refer = [];   // 涉及人或者参与者等，json array
+	refer = reg.byId("article_refers_select").get("value");   // 涉及人或者参与者等，json array
 	state = "";
 	
 	return obj;
@@ -484,7 +488,7 @@ function ys_article_grid_insert(obj){
 }
 
 
-function ys_article_grid_update(row, obj){
+function ys_article_grid_update(row, obj, reg){
 	
 	 
 		obj.articleId = row.articleId;
@@ -492,7 +496,7 @@ function ys_article_grid_update(row, obj){
  
 		moduser = YS_MGT_CURRENT_USER.username; //修改者 userid
 		moddate = new Date().getTime() ;//修改时间戳
-		refer = [];   // 涉及人或者参与者等，json array
+		refer = reg.byId("article_refers_select").get("value");   // 涉及人或者参与者等，json array
 		state = "";
 		
 		return obj;	
@@ -521,4 +525,54 @@ function ys_article_pre_check(article_content, article_title){
     
     return true;
     
+}
+
+function ys_set_user_list_in_article_refer(reg, xhr, common, Memory, domConstruct, win){
+	
+	var p_list = new Array();
+	var uri = "";
+	
+	if(YS_TEST){
+		uri = "../test_res/users.json";
+	}else{
+		uri = "http://cssa.yunsoft.co.uk/taskman/user/";
+	}
+	
+	 
+    xhr(uri,{handleAs: "json"}).then(function(data){
+        if(data){
+        	console.log("data from server ", data);
+            for(var p in data){
+                var person = data[p];
+                var p_show = person.dispname;
+                if(p_show && p_show != ""){
+                	p_list.push({uid:person.uid, label:p_show});
+                }
+            }
+        }
+
+        console.log("person_list ", p_list);
+       
+        var refers_select = reg.byId("article_refers_select");
+        
+        domConstruct.empty("article_refers_select");
+
+        for(var i in p_list){
+        	console.log(i);
+            var c = win.doc.createElement('option');
+     
+            c.innerHTML = p_list[i].label;
+            c.value = p_list[i].uid;
+            console.log(c);
+            refers_select.domNode.appendChild(c);
+        }
+
+
+
+    }, function(err){
+        console.log("put data error: users error");
+    }, function(evt){
+    });
+	
+	
 }
