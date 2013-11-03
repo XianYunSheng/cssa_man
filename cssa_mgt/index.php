@@ -101,6 +101,7 @@
         "dojox/form/PasswordValidator",
         "dijit/Toolbar",
         "dijit/Editor",
+         
         "dijit/_editor/plugins/FontChoice", // 'fontName','fontSize','formatBlock'
         "dijit/_editor/plugins/TextColor",
         "dojox/editor/plugins/LocalImage",

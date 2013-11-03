@@ -157,7 +157,7 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
             updateDatePicker(e.startTime, e.endTime);
         });
 
-        console.log("1");
+        //console.log("1");
 
         calendar_picker.getClassForDate = function(date, locale){
 
@@ -171,13 +171,13 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
         };
 
 
-        console.log("2");
+        //console.log("2");
         
         var teamCheckbox = reg.byId("calendar_mgt_calendar_team_checkbox");
         var publicCheckbox = reg.byId("calendar_mgt_calendar_public_checkbox");
 
 
-        console.log("3");
+        //console.log("3");
         var summary = reg.byId("calendar_mgt_summery_text");
         var startDate = reg.byId("calendar_mgt_time_start_date");
         var startTime = reg.byId("calendar_mgt_time_start_time");
@@ -188,7 +188,7 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
         var updateBtn = reg.byId("calendar_mgt_event_update_btn");
         var deleteBtn = reg.byId("calendar_mgt_event_delete_btn");
 
-        console.log("4");
+        //console.log("4");
         var calendar_select_store = new Memory({
             data:  [
                     {"id":'cal1', "label":"Team 日历"},
@@ -200,7 +200,7 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
         calendarEditor.store = calendar_select_store;
         calendarEditor.searchAttr = "label";
 
-        console.log("5");
+        //console.log("5");
 
         var mergeDateTime = function(isStart){
             var dateEditor = isStart ? startDate : endDate;
@@ -213,7 +213,7 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
         };
 
 
-        console.log("6");
+        //console.log("6");
         
         updateBtn.on("click", function(value){
             console.log("calendar.editedItem  in update click", calendar.editedItem);
@@ -299,7 +299,7 @@ function gc_calendar_left_pane_in_calendar_management_init(calendar){
         });
 
 
-        console.log("8");
+        //console.log("8");
 
         var selectionChanged = function(item){
 

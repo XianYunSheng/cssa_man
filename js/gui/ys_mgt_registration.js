@@ -68,26 +68,63 @@ function ys_doRegDlg(){
 			var passwd_field = reg.byId("mgt_reg_passwd");	 
 			var passwd_field2 = reg.byId("mgt_reg_passwd2");
 			
-			if(username_field.isValid() && email_field.isValid() && passwd_field.isValid() && passwd_field2.isValid()){
+			username_field.onChange = function(value){
+				//验证用户名是否被占用
+				 
+				var validate_uri = "";
 				
-				//var uri = 
-				var uri = "../test_res/registration.json";
+				if(YS_TEST){
+					validate_uri = "../test_res/passwdreset.json";
+				}else{
+					validate_uri = "http://cssa.yunsoft.co.uk/taskman/usernamevalidate/";
+				}
 				
-				var put_data = json.toJson({id:"", username:username_field.get("value"), email:email_field.get("value"), passwd:passwd_field.get("value") });
+				
+				var post_data = json.toJson({username:value});
+				xhr(validate_uri,{handleAs: "json", method:"POST", data:post_data}).then(function(data){
 
-				xhr(check_uri,{handleAs: "json", method:"PUT", data:put_data}).then(function(data){
+					console.log("callback data", data);
+					if(data){
+						if(!data.success){
+							alert("该用户名已经被占用，请重新填写");
+						}else{
+							 //do nothing
+						}
+					}else{
+						console.log("error: 返回为空.");
+					}
+					
+
+				},function(err){
+					alert(common.internal_server_error);
+				});			
+				
+			};
+			
+			
+			if(username_field.isValid() && email_field.isValid() && passwd_field.isValid() && passwd_field2.isValid()){
+				//进行用户插入
+				 
+				var uri = "";
+				
+				if(YS_TEST){
+					uri = "../test_res/registration.json";
+				}else{
+					uri = "http://cssa.yunsoft.co.uk/taskman/user/";
+				}
+				
+				var put_data = json.toJson({uid:"", username:username_field.get("value"), email:email_field.get("value"), passwd:passwd_field.get("value") });
+
+				xhr(uri,{handleAs: "json", method:"PUT", data:put_data}).then(function(data){
 
 					console.log("callback data", data);
 					if(data.success){
 						alert("您已经注册成功，请登录");
 						dlg.hide();
 					}else{
-						//后台服务失败
-						if("user_exists" == data.error){
-							alert("该用户名已经存在，请重新尝试");
-						}else{
+						 
 							alert(common.operation_error);
-						}
+						 
 						
 					}
 

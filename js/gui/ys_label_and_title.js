@@ -25,7 +25,7 @@ function ys_setGuiLabelAndTitle(){
 	        dom.byId("mgt_registration_lb").innerHTML = common.registration;
 	        dom.byId("mgt_password_forgot_text_lb").innerHTML = common.pw_forgot_tips; 
             dom.byId("mgt_password_usr_lb").innerHTML = common.login_username;  
-            dom.byId("mgt_password_email_lb").innerHTML = common.email;
+//            dom.byId("mgt_password_email_lb").innerHTML = common.email;
 //            dom.byId("mgt_password_reset_text").innerHTML = common.chg_pw_tips + "&nbsp;(" + common.password_format + ")";
 //            dom.byId("mgt_old_password_lb").innerHTML = common.old_pw;
 //            dom.byId("mgt_new_password_lb").innerHTML = common.new_pw;

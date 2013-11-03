@@ -16,11 +16,10 @@ User
 +   PUT    /user/$userId/pw/       修改id为userid的user的password属性
  
 +POST     /passwdreset/              postdata: {id:userid, email:email}  
-前台已经检查了用户和邮件的合法性。后台得到post请求后，生成新的随机密码，覆盖旧密码，并将新密码发送到相应的email中。密码格式：4到10位字母或数字，且至少包含一个数字。
 
 json obj：
 {
-id: long,
+uid: long,
 username:string,
 dispname:string, //显示名
 first name:string,
@@ -50,14 +49,14 @@ phpsessid:string   // 用在判断用户在线和不能同时异地登录，以�
 返回
 {
 success: true/false, 
-id: long//该user的id
+uid: long//该user的id
 }
 
 
 + POST  /logout/
 json obj:
 {
-userid: long  // user的id
+uid: long  // user的id
 phpsessid:string   
 }
 
