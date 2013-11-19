@@ -36,7 +36,7 @@ function ys_doLogin() {
 	if(YS_TEST){
 		url = "../test_res/login.json";
 	}else{
-		url = "http://cssa.yunsoft.co.uk/taskman/login/";
+		url = "http://www.cssa.yunsoft.co.uk/taskman/login/";
 	}
 	
 	 
@@ -58,6 +58,9 @@ function ys_doLogin() {
 				});
 				xhr(url, {
 					handleAs : "json",
+					headers: {                     // This is required to stop the
+			 			"X-Requested-With": "" // server from rejecting the 
+			 		},
 					method : "POST",
 					data : post_data
 				})
@@ -76,7 +79,7 @@ function ys_doLogin() {
 											if(YS_TEST){
 												uri_user_info = "../test_res/login_user.json";
 											}else{
-												uri_user_info = "http://cssa.yunsoft.co.uk/taskman/user/" + user_data.uid;
+												uri_user_info = "http://www.cssa.yunsoft.co.uk/taskman/user/id/" + user_data.uid;
 											}
 											
 										 
@@ -103,7 +106,10 @@ function ys_doLogin() {
 											};
 
 											xhr(uri_user_info, {
-												handleAs : "json"
+												handleAs : "json",
+												headers: {                     // This is required to stop the
+										 			"X-Requested-With": "" // server from rejecting the 
+										 		}
 											})
 													.then(
 															function(info_data) {
@@ -231,7 +237,7 @@ function ys_doPasswdDlg() {
 				if(YS_TEST){
 					uri = "../test_res/passwdreset.json";
 				}else{
-					uri = "http://cssa.yunsoft.co.uk/taskman/userrestpw/";
+					uri = "http://www.cssa.yunsoft.co.uk/taskman/userrestpw/";
 				}
 				
 				
@@ -241,6 +247,9 @@ function ys_doPasswdDlg() {
 
 				xhr(uri, {
 					handleAs : "json",
+					headers: {                     // This is required to stop the
+			 			"X-Requested-With": "" // server from rejecting the 
+			 		},
 					method : "POST",
 					data : post_data
 				}).then(function(data) {

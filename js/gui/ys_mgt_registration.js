@@ -3,8 +3,8 @@ function doRegistration(){
 }
 
 function ys_doShowRegistration(){	
-	require(["dijit/registry","ready!"],
-	        function(reg){
+	require(["dijit/registry","dojo/request/xhr", "dojo/_base/json", "dojo/i18n!../js/nls/common.js","ready!"],
+	        function(reg, xhr, json, common){
 	            var dlg = reg.byId("mgt_regDlg");
 	            //console.log(dlg);
 	            if(dlg){
@@ -17,6 +17,47 @@ function ys_doShowRegistration(){
 	            	passwd_field.set("pattern", '^(?=.*\\d).{4,10}$');  //4到10位之间，必须含有一位数字
 	            	username_field.set("pattern", '^\\w+$');   // 英数字加下划线串   
 	            	//email_field.set("pattern", '^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$'); 
+	            	
+	            	
+	            	username_field.onChange = function(value){
+	    				//验证用户名是否被占用
+	    				
+	    				console.log("vaule",value);
+	    				 
+	    				var validate_uri = "";
+	    				
+	    				if(YS_TEST){
+	    					validate_uri = "../test_res/passwdreset.json";
+	    				}else{
+	    					validate_uri = "http://www.cssa.yunsoft.co.uk/taskman/usernamevalidate/";
+	    				}
+	    				
+	    				
+	    				var post_data = json.toJson({username:value});
+	    				xhr(validate_uri,{handleAs: "json", 
+	    					headers: {                     // This is required to stop the
+	    			 			"X-Requested-With": "" // server from rejecting the 
+	    			 		},
+	    					method:"POST", data:post_data}).then(function(data){
+
+	    					console.log("callback data", data);
+	    					if(data){
+	    						if(!data.success){
+	    							alert("该用户名已经被占用，请重新填写");
+	    						}else{
+	    							 //do nothing
+	    						}
+	    					}else{
+	    						console.log("error: 返回为空.");
+	    					}
+	    					
+
+	    				},function(err){
+	    					alert(common.internal_server_error);
+	    				});			
+	    				
+	    			};
+	            	
 	            	
 	                dlg.show();
 	            }
@@ -68,38 +109,7 @@ function ys_doRegDlg(){
 			var passwd_field = reg.byId("mgt_reg_passwd");	 
 			var passwd_field2 = reg.byId("mgt_reg_passwd2");
 			
-			username_field.onChange = function(value){
-				//验证用户名是否被占用
-				 
-				var validate_uri = "";
-				
-				if(YS_TEST){
-					validate_uri = "../test_res/passwdreset.json";
-				}else{
-					validate_uri = "http://cssa.yunsoft.co.uk/taskman/usernamevalidate/";
-				}
-				
-				
-				var post_data = json.toJson({username:value});
-				xhr(validate_uri,{handleAs: "json", method:"POST", data:post_data}).then(function(data){
-
-					console.log("callback data", data);
-					if(data){
-						if(!data.success){
-							alert("该用户名已经被占用，请重新填写");
-						}else{
-							 //do nothing
-						}
-					}else{
-						console.log("error: 返回为空.");
-					}
-					
-
-				},function(err){
-					alert(common.internal_server_error);
-				});			
-				
-			};
+			
 			
 			
 			if(username_field.isValid() && email_field.isValid() && passwd_field.isValid() && passwd_field2.isValid()){
@@ -110,12 +120,20 @@ function ys_doRegDlg(){
 				if(YS_TEST){
 					uri = "../test_res/registration.json";
 				}else{
-					uri = "http://cssa.yunsoft.co.uk/taskman/user/";
+					uri = "http://www.cssa.yunsoft.co.uk/taskman/user/id/";
 				}
 				
 				var put_data = json.toJson({uid:"", username:username_field.get("value"), email:email_field.get("value"), passwd:passwd_field.get("value") });
 
-				xhr(uri,{handleAs: "json", method:"PUT", data:put_data}).then(function(data){
+				
+				console.log("PUT 数据 ： ", put_data);
+				
+				xhr(uri,{handleAs: "json", 
+					headers: {                     // This is required to stop the
+			 			"X-Requested-With": "" // server from rejecting the 
+			 		},
+					method:"PUT", 
+					data:put_data}).then(function(data){
 
 					console.log("callback data", data);
 					if(data.success){
